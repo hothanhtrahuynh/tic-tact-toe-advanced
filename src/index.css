@@ -16,6 +16,10 @@ body {
 ol,
 ul {
     padding-left: 30px;
+    overflow: hidden;
+    height: 570px;
+    overflow-y: scroll;
+    width: 190px;
 }
 
 .board-row:after {
@@ -32,15 +36,15 @@ ul {
     background: #fff;
     border: 1px solid #999;
     float: left;
-    font-size: 60px;
+    font-size: 25px;
     font-weight: bold;
     line-height: 34px;
-    height: 100px;
+    height: 35px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 100px;
+    width: 35px;
 }
 
 .square.selected {
@@ -68,7 +72,8 @@ ul {
     align-content: center;
     flex-wrap: nowrap;
     justify-content: space-evenly;
-    align-items: center;
+    /* align-items: center; */
+    margin-top: 70px;
     height: 100vh;
    
 }

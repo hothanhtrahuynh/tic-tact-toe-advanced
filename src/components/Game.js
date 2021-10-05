@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { calculateWinner } from "../calc/calculate";
+import React, { useState } from "react";
+import { calculateWinnerAdvancced } from "../calc/calculate";
 import ToggleButton from "../UI/ToggleButton";
 import Board from "./Board";
 import Message from "./Message";
@@ -49,7 +49,7 @@ const Game = () => {
     setShowMessage(true);
   };
 
-  const newGame=()=>{
+  const newGame = () => {
     setGame(initialState);
     setShowMessage(true);
   }
@@ -64,9 +64,10 @@ const Game = () => {
 
   const handleClick = (i) => {
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinnerAdvancced(squares) || squares[i]) {
       return;
     }
+    
     squares[i] = game.xIsNext ? "X" : "O";
 
     setGame({
@@ -84,12 +85,13 @@ const Game = () => {
 
   const isEnd = checkFullStep(current.squares);
 
-  const winner = calculateWinner(current.squares);
+  const winner = calculateWinnerAdvancced(current.squares,20);
+ 
   let status;
   let message;
   if (winner) {
     status = "Winner is " + winner.winner;
-    message = <Message message={status} win={true}  newGame={newGame} onClose={closeMessgaeHandler} />
+    message = <Message message={status} win={true} newGame={newGame} onClose={closeMessgaeHandler} />
 
 
   } else {
@@ -99,32 +101,28 @@ const Game = () => {
 
   if (isEnd && !winner) {
 
-    message = <Message message='Oh Tie...!' win={false} newGame={newGame} onClose={closeMessgaeHandler} />
+    message = <Message message= {`Oh It's a draw`} win={false} newGame={newGame} onClose={closeMessgaeHandler} />
 
   }
 
   let listMoves = [];
 
-  const movesHistory = () => {
+  history.map((step, move, history) => {
+    const current = history[move].squares;
+    const pre = history[move > 0 ? move - 1 : 0].squares;
 
-    history.map((step, move, history) => {
-      const current = history[move].squares;
-      const pre = history[move > 0 ? move - 1 : 0].squares;
+    for (let index = 0; index < current.length; index++) {
+      if (current[index] !== null && current[index] !== pre[index]) {
+        listMoves.push({
+          step: move,
+          player: current[index],
+          position: index,
+        });
 
-      for (let index = 0; index < current.length; index++) {
-        if (current[index] !== null && current[index] !== pre[index]) {
-          listMoves.push({
-            step: move,
-            player: current[index],
-            position: index,
-          });
-
-        }
       }
-    });
-  };
+    }
+  });
 
-  movesHistory();
 
   const sortedMoves = sortMoves(listMoves, game.isAsc);
 
@@ -132,7 +130,7 @@ const Game = () => {
 
     const desc =
       step !== null
-        ? `${move.player} go to ( ${move.position % 3}, ${parseInt(move.position / 3)})`
+        ? `${move.player} go to ( ${move.position % 20}, ${parseInt(move.position / 20)})`
         : "Go to game start";
     return (
       <li key={step}>
@@ -145,18 +143,18 @@ const Game = () => {
     <div className="total">
       <h1 className="title-game">Tic Tac Toe</h1>
 
-    <div className="game">
-      
-      <div className="game-board">
-        <Board squares={current.squares} selectedSquare={game.currenPos} onClick={(i) => handleClick(i)} winPath={winner ? winner.path : null} />
+      <div className="game">
+
+        <div className="game-board">
+          <Board squares={current.squares} selectedSquare={game.currenPos} onClick={(i) => handleClick(i)} winPath={winner ? winner.path : null} />
+        </div>
+        <div className="game-info">
+          <h1>{status}</h1>
+          <ToggleButton onClick={sortHandler} isAsc={game.isAsc} />
+          <ol>{moves_tmp}</ol>
+        </div>
+        {showMessgae && message}
       </div>
-      <div className="game-info">
-        <h1>{status}</h1>
-        <ToggleButton onClick={sortHandler} isAsc={game.isAsc} />
-        <ol>{moves_tmp}</ol>
-      </div>
-      {showMessgae&&message}
-    </div>
     </div>
   );
 };
