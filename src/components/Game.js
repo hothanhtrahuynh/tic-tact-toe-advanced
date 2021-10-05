@@ -151,7 +151,7 @@ const Game = (props) => {
 
   return (
     <div className="total">
-      <h1 className="title-game">Tic Tac Toe</h1>
+      <h1 className="title-game">Caro Game</h1>
       
       <RangeBar onChange={onChangeSizeHandler}/>
       <div className="game">
