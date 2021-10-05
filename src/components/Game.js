@@ -4,6 +4,8 @@ import ToggleButton from "../UI/ToggleButton";
 import Board from "./Board";
 import Message from "./Message";
 import classes from './Game.module.css'
+import RangeBar from "./RangeBar";
+
 
 const initialState = {
   history: [
@@ -32,13 +34,19 @@ const checkFullStep = (currentBoard) => {
   return !currentBoard.includes(null);
 }
 
-const Game = () => {
+const Game = (props) => {
   const [game, setGame] = useState(initialState);
 
   const [showMessgae, setShowMessage] = useState(true);
 
+  const [size, setSize] = useState(5);
+
   const history = game.history;
   const current = history[game.stepNumber];
+
+  const onChangeSizeHandler =(value)=>{
+    setSize(value);
+  }
 
   const jumpTo = (step) => {
     setGame({
@@ -142,7 +150,8 @@ const Game = () => {
   return (
     <div className="total">
       <h1 className="title-game">Tic Tac Toe</h1>
-
+      
+      <RangeBar onChange={onChangeSizeHandler}/>
       <div className="game">
 
         <div className="game-board">
