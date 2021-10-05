@@ -1,16 +1,16 @@
 import React from "react";
 import Square from "./Square";
 
-const Board = ({ squares, onClick, winPath, selectedSquare }) => {
+const Board = ({size, squares, onClick, winPath, selectedSquare }) => {
 
   const gameBoard = [];
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < size; i++) {
     let list = [];
 
-    for (let k = 0; k < 20; k++) {
+    for (let k = 0; k < size; k++) {
       
-        list.push(renderSquare(20 * i + k,squares, onClick, winPath, selectedSquare));
+        list.push(renderSquare(size * i + k,squares, onClick, winPath, selectedSquare));
   
     }
 

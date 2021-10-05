@@ -44,8 +44,14 @@ const Game = (props) => {
   const history = game.history;
   const current = history[game.stepNumber];
 
+  const newGame = () => {
+    setGame(initialState);
+    setShowMessage(true);
+  }
+
   const onChangeSizeHandler =(value)=>{
     setSize(value);
+    newGame();
   }
 
   const jumpTo = (step) => {
@@ -57,10 +63,6 @@ const Game = (props) => {
     setShowMessage(true);
   };
 
-  const newGame = () => {
-    setGame(initialState);
-    setShowMessage(true);
-  }
 
   const closeMessgaeHandler = () => {
     setShowMessage(false);
@@ -93,7 +95,7 @@ const Game = (props) => {
 
   const isEnd = checkFullStep(current.squares);
 
-  const winner = calculateWinnerAdvancced(current.squares,20);
+  const winner = calculateWinnerAdvancced(current.squares,size);
  
   let status;
   let message;
@@ -138,7 +140,7 @@ const Game = (props) => {
 
     const desc =
       step !== null
-        ? `${move.player} go to ( ${move.position % 20}, ${parseInt(move.position / 20)})`
+        ? `${move.player} go to ( ${move.position % size}, ${parseInt(move.position / size)})`
         : "Go to game start";
     return (
       <li key={step}>
@@ -155,7 +157,7 @@ const Game = (props) => {
       <div className="game">
 
         <div className="game-board">
-          <Board squares={current.squares} selectedSquare={game.currenPos} onClick={(i) => handleClick(i)} winPath={winner ? winner.path : null} />
+          <Board size={size} squares={current.squares} selectedSquare={game.currenPos} onClick={(i) => handleClick(i)} winPath={winner ? winner.path : null} />
         </div>
         <div className="game-info">
           <h1>{status}</h1>
